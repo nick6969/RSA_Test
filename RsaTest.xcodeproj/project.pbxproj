@@ -12,6 +12,7 @@
 		01B3DEB521B82B97007D9503 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01B3DEB321B82B97007D9503 /* Main.storyboard */; };
 		01B3DEB721B82B99007D9503 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01B3DEB621B82B99007D9503 /* Assets.xcassets */; };
 		01B3DEBA21B82B99007D9503 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01B3DEB821B82B99007D9503 /* LaunchScreen.storyboard */; };
+		01B3DEC221B82BBB007D9503 /* Security.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B3DEC121B82BBB007D9503 /* Security.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		01B3DEB621B82B99007D9503 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		01B3DEB921B82B99007D9503 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		01B3DEBB21B82B99007D9503 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		01B3DEC121B82BBB007D9503 /* Security.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Security.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 				01B3DEB621B82B99007D9503 /* Assets.xcassets */,
 				01B3DEB821B82B99007D9503 /* LaunchScreen.storyboard */,
 				01B3DEBB21B82B99007D9503 /* Info.plist */,
+				01B3DEC121B82BBB007D9503 /* Security.swift */,
 			);
 			path = RsaTest;
 			sourceTree = "<group>";
@@ -74,6 +77,7 @@
 				01B3DEA821B82B97007D9503 /* Sources */,
 				01B3DEA921B82B97007D9503 /* Frameworks */,
 				01B3DEAA21B82B97007D9503 /* Resources */,
+				01B3DEC321B82BE3007D9503 /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -130,6 +134,27 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		01B3DEC321B82BE3007D9503 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		01B3DEA821B82B97007D9503 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -137,6 +162,7 @@
 			files = (
 				01B3DEB221B82B97007D9503 /* ViewController.swift in Sources */,
 				01B3DEB021B82B97007D9503 /* AppDelegate.swift in Sources */,
+				01B3DEC221B82BBB007D9503 /* Security.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,6 +311,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DZBBP5D6DJ;
 				INFOPLIST_FILE = RsaTest/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -303,6 +330,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DZBBP5D6DJ;
 				INFOPLIST_FILE = RsaTest/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
