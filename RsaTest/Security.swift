@@ -37,27 +37,15 @@ final class RSASecurity {
     private let privateKeyFileName: String = "private_key.p12"
     private let privateKeyPassWord: String = "1234"
 
-    private var publicKeyRef: SecKey?
-    private var privateKeyRef: SecKey?
-    
-    private init() {
-        do {
-            try loadPublicKey(with: publicKeyFileName)
-            try loadPrivateKey(with: privateKeyFileName, password: privateKeyPassWord)
-        } catch {
-            print(msg: error)
-        }
-    }
-
     func encryptWithPublicKey(data: Data?) throws -> Data {
         guard let data = data else { throw RSAError.noData }
-        guard let publicKey = publicKeyRef else { throw RSAError.noKey }
+        let publicKey = try getPublicKey()
         return try encrypt(data: data, key: publicKey)
     }
     
     func decryptWithPrivateKey(data: Data?) throws -> Data {
         guard let data = data else { throw RSAError.noData }
-        guard let privateKey = privateKeyRef else { throw RSAError.noKey }
+        let privateKey = try getPrivateKey()
         return try decrypt(data: data, key: privateKey)
     }
 
@@ -66,14 +54,17 @@ final class RSASecurity {
 // MARK: - Load Key
 extension RSASecurity {
     
-    private func loadPublicKey(with fileName: String) throws {
-        guard let path = Bundle.main.path(forResource: fileName, ofType: nil) else {
-            throw RSAError.pathError
-        }
-        
-        guard let certificateData = NSData(contentsOfFile: path) else {
-            throw RSAError.noFileError
-        }
+    private func getPublicKey() throws -> SecKey {
+        return try loadPublicKey(with: publicKeyFileName)
+    }
+    
+    private func getPrivateKey() throws -> SecKey {
+        return try loadPrivateKey(with: privateKeyFileName, password: privateKeyPassWord)
+    }
+
+    private func loadPublicKey(with fileName: String) throws -> SecKey {
+        guard let path = Bundle.main.path(forResource: fileName, ofType: nil) else { throw RSAError.pathError }
+        guard let certificateData = NSData(contentsOfFile: path) else { throw RSAError.noFileError }
         
         guard let secCertificateRef = SecCertificateCreateWithData(kCFAllocatorDefault, certificateData) else {
             throw RSAError.loadCertificateCreateFail
@@ -91,36 +82,26 @@ extension RSASecurity {
             let key = SecTrustCopyPublicKey(trust) else {
                 throw RSAError.noKey
         }
-        self.publicKeyRef = key
+        return key
     }
 
-    private func loadPrivateKey(with fileName: String, password: String) throws {
-        guard let path = Bundle.main.path(forResource: fileName, ofType: nil) else {
-            throw RSAError.pathError
-        }
-        
-        guard let pkcs12Data = NSData(contentsOfFile: path) else {
-            throw RSAError.noFileError
-        }
+    private func loadPrivateKey(with fileName: String, password: String) throws -> SecKey {
+        guard let path = Bundle.main.path(forResource: fileName, ofType: nil) else { throw RSAError.pathError }
+        guard let pkcs12Data = NSData(contentsOfFile: path) else { throw RSAError.noFileError }
 
         var imported: CFArray?
-        let options = [kSecImportExportPassphrase as String: password as CFString]
+        let options = [kSecImportExportPassphrase: password]
         let status = SecPKCS12Import(pkcs12Data, (options as CFDictionary), &imported)
-        switch status {
-        case noErr:
-            let identityDict = unsafeBitCast(CFArrayGetValueAtIndex(imported, 0), to: CFDictionary.self) as NSDictionary
-            // swiftlint:disable force_cast
-            let identityRef = identityDict[kSecImportItemIdentity as String] as! SecIdentity
-            var privateKeyRef: SecKey?
-            let error = SecIdentityCopyPrivateKey(identityRef, &privateKeyRef)
-            if error == noErr {
-                self.privateKeyRef = privateKeyRef
-            } else {
-                throw RSAError.certificateError(message: getOSStatusMessage(status))
-            }
-        default:
-            throw RSAError.certificateError(message: getOSStatusMessage(status))
-        }
+        if status != noErr { throw RSAError.certificateError(message: getOSStatusMessage(status)) }
+        
+        let identityDict = unsafeBitCast(CFArrayGetValueAtIndex(imported, 0), to: CFDictionary.self) as NSDictionary
+        // swiftlint:disable force_cast
+        let identityRef = identityDict[kSecImportItemIdentity as String] as! SecIdentity
+        var privateKeyRef: SecKey?
+        let error = SecIdentityCopyPrivateKey(identityRef, &privateKeyRef)
+        if error != noErr { throw RSAError.certificateError(message: getOSStatusMessage(error)) }
+        
+        return privateKeyRef!
     }
     
 }
@@ -147,9 +128,9 @@ extension RSASecurity {
                                        indexEnd-index,
                                        &encryptedDataBuffer,
                                        &encryptedDataLength)
-            if status != noErr {
-                throw RSAError.encryptFail(message: getOSStatusMessage(status))
-            }
+            
+            if status != noErr { throw RSAError.encryptFail(message: getOSStatusMessage(status)) }
+            
             encryptedData += encryptedDataBuffer
             index += maxChunkSize
         }
@@ -179,9 +160,9 @@ extension RSASecurity {
                                        indexEnd-index,
                                        &decryptedDataBuffer,
                                        &decryptedDataLength)
-            if status != noErr {
-                throw RSAError.decryptFail(message: getOSStatusMessage(status))
-            }
+            
+            if status != noErr { throw RSAError.decryptFail(message: getOSStatusMessage(status)) }
+            
             decryptedDataBuffer = decryptedDataBuffer.filter { $0 != 0x00 }
             decryptedData += decryptedDataBuffer
             index += blockSize

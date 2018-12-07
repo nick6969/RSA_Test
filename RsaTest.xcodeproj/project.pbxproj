@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		013F0CB821BAA50F0019CA2E /* private_key.p12 in Resources */ = {isa = PBXBuildFile; fileRef = 013F0CB621BAA50E0019CA2E /* private_key.p12 */; };
+		013F0CB921BAA50F0019CA2E /* public_key.der in Resources */ = {isa = PBXBuildFile; fileRef = 013F0CB721BAA50F0019CA2E /* public_key.der */; };
 		01B3DEB021B82B97007D9503 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B3DEAF21B82B97007D9503 /* AppDelegate.swift */; };
 		01B3DEB221B82B97007D9503 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B3DEB121B82B97007D9503 /* ViewController.swift */; };
 		01B3DEB521B82B97007D9503 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01B3DEB321B82B97007D9503 /* Main.storyboard */; };
@@ -16,6 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		013F0CB621BAA50E0019CA2E /* private_key.p12 */ = {isa = PBXFileReference; lastKnownFileType = file; path = private_key.p12; sourceTree = "<group>"; };
+		013F0CB721BAA50F0019CA2E /* public_key.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = public_key.der; sourceTree = "<group>"; };
 		01B3DEAC21B82B97007D9503 /* RsaTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RsaTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01B3DEAF21B82B97007D9503 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		01B3DEB121B82B97007D9503 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -56,6 +60,8 @@
 		01B3DEAE21B82B97007D9503 /* RsaTest */ = {
 			isa = PBXGroup;
 			children = (
+				013F0CB621BAA50E0019CA2E /* private_key.p12 */,
+				013F0CB721BAA50F0019CA2E /* public_key.der */,
 				01B3DEAF21B82B97007D9503 /* AppDelegate.swift */,
 				01B3DEB121B82B97007D9503 /* ViewController.swift */,
 				01B3DEB321B82B97007D9503 /* Main.storyboard */,
@@ -77,7 +83,6 @@
 				01B3DEA821B82B97007D9503 /* Sources */,
 				01B3DEA921B82B97007D9503 /* Frameworks */,
 				01B3DEAA21B82B97007D9503 /* Resources */,
-				01B3DEC321B82BE3007D9503 /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -129,31 +134,12 @@
 				01B3DEBA21B82B99007D9503 /* LaunchScreen.storyboard in Resources */,
 				01B3DEB721B82B99007D9503 /* Assets.xcassets in Resources */,
 				01B3DEB521B82B97007D9503 /* Main.storyboard in Resources */,
+				013F0CB821BAA50F0019CA2E /* private_key.p12 in Resources */,
+				013F0CB921BAA50F0019CA2E /* public_key.der in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		01B3DEC321B82BE3007D9503 /* SwiftLint */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = SwiftLint;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		01B3DEA821B82B97007D9503 /* Sources */ = {

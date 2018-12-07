@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         testRsa()
+        requsestPHP()
     }
 
     func testRsa() {
@@ -32,6 +33,39 @@ class ViewController: UIViewController {
         } catch {
             print(msg: error)
         }
+    }
+    
+    func requsestPHP() {
+        let data = plainText.data(using: .utf8)!
+        do {
+            let res = try RSASecurity.shared.encryptWithPublicKey(data: data)
+            guard let value = res.base64Encoded() else {
+                print(msg: "encrypt Base64 fail")
+                return
+            }
+            print(msg: value)
+            request(with: value)
+        } catch {
+            print(msg: error)
+        }
+    }
+    
+    func request(with value: String) {
+        
+        let url = URL(string: "http://localhost:8888/RSATest.php")!
+        let data = "data=\(value)".addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!.replacingOccurrences(of: "+", with: "%2B").data(using: .utf8)!
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = data
+        
+        URLSession.shared.dataTask(with: request) { (data, res, error) in
+            if let data = data, let str = String(data: data, encoding: .utf8) {
+                print(msg: str)
+            } else {
+                print(msg: "PHP 解碼失敗")
+            }
+            }.resume()
     }
     
 }
